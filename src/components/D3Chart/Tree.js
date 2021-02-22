@@ -76,7 +76,58 @@ export default class TreeComponent extends React.Component {
       .attr("height", height)
       .style('border', '1px solid #333')
     console.log(svg)
+    const routeGroup = svg.append('g')
+      .attr('transform', `translate(0,0)`)
+    const contentGroup = svg.append('g')
+      .attr('transform', `translate(${gridPading.left}, ${gridPading.top})`);
+    // const {nodes, links} = this.getTreeData();
+    this.getTreeData()
   }
+
+  getTreeData () {
+    const {width, height, gridPading, data, maxDepth} = this.props;
+    console.log('getTreeData', data)
+    const depthFilter = (children, depth, n = 1) => {
+      const [item] = children.filter(item => item.children && item.children.length > 0)
+      if (depth !== undefined && n > depth) {
+        return {
+          item,
+          depth: n,
+        }
+      }
+      if (item) {
+        const {children} = item;
+        return depthFilter(children, depth, ++n);
+      }
+      return {
+        item,
+        depth: n,
+      }
+    }
+    const {depth} = depthFilter([data], undefined);
+    const {item: dataSource} = depthFilter([data], depth - maxDepth)
+    // 创建一个树状图
+    const d3Tree = d3.tree()
+      .size([width - gridPading.top - gridPading.bottom, height - gridPading.right - gridPading.left])
+      .separation((a, b) => {
+        //适应radial布局，可以简单的理解为深度越高，相邻子节点之间的距离越小。
+        return a.parent === b.parent ? 1: 1;
+      })
+    // 创建一个层级布局
+    const hierarchyData = d3.hierarchy(dataSource)
+      .sum(function (d) {
+        return d.value;
+      })
+    // 初始化树状图，传入数据得到绘制树的基本数据
+    const treeData = d3Tree(hierarchyData);
+    const nodes = treeData.descendants();
+    const links = treeData.links();
+    return {
+      nodes,
+      links,
+    }
+  }
+
 
   componentDidMount () {
     this.drawInit(this.dom)
