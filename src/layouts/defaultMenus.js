@@ -55,13 +55,18 @@ export default [
     ],
   },
   {
-    path: '/tree',
-    name: 'chart',
+    path: '/chart',
+    name: 'd3chart',
     icon: 'setting',
     children: [
       {
-        path: '/bar-chart',
-        name: 'chart-tree',
+        path: '/chart/bar-chart',
+        name: 'bar-chart',
+        icon: ''
+      },
+      {
+        path: '/chart/tree-chart',
+        name: 'tree-chart',
         icon: ''
       }
     ]

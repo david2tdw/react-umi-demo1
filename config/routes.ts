@@ -132,10 +132,22 @@ export default [
                 component: './TableList',
               },
               {
-                path: '/bar-chart',
+                path: '/chart',
                 name: 'd3chart',
                 icon: 'table',
-                component: './Chart/bar-chart',
+                // component: './Chart/bar-chart',
+                routes: [
+                  {
+                    path: '/chart/bar-chart',
+                    name: 'bar-chart',
+                    component: './Chart/bar-chart'
+                  },
+                  {
+                    path: '/chart/tree-chart',
+                    name: 'tree-chart',
+                    component: './Chart/TreeChart'
+                  },
+                ]
               },
               {
                 component: './404',

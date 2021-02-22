@@ -12,6 +12,8 @@ export default {
   'menu.dashboard.monitor': '监控页',
   'menu.dashboard.workplace': '工作台',
   'menu.d3chart': 'd3图表',
+  'menu.d3chart.bar-chart': '柱状',
+  'menu.d3chart.tree-chart': '树图',
   'menu.chart': 'd3图表1',
   'menu.chart.chart-tree': '柱状图',
   'menu.exception.403': '403',
