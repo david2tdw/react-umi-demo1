@@ -56,6 +56,12 @@
                 component: './TableList',
               },
               {
+                path: '/bar-chart',
+                name: 'd3chart',
+                icon: 'table',
+                component: './Chart/bar-chart',
+              },
+              {
                 component: './404',
               },
             ],
