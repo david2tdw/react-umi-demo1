@@ -184,15 +184,15 @@ const BasicForm: React.FC<BasicFormProps> = props => {
                 </em>
               </span>
             }
-            name="weight"
-
           >
-            <InputNumber
-              placeholder={useIntl().formatMessage({ id: 'formandbasic-form.weight.placeholder' })}
-              min={0}
-              max={100}
-            />
-            <span className="ant-form-text">%</span>
+            <FormItem name="weight" noStyle>
+              <InputNumber
+                placeholder={useIntl().formatMessage({ id: 'formandbasic-form.weight.placeholder' })}
+                min={0}
+                max={100}
+              />
+            </FormItem>
+              <span className="ant-form-text">%</span>
           </FormItem>
           <FormItem
             {...formItemLayout}

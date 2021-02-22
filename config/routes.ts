@@ -52,6 +52,29 @@
                 ]
               },
               {
+                path: '/form',
+                icon: 'icon-twitter',
+                name: 'form',
+                routes: [
+                  {
+                    path: '/',
+                    redirect: '/form/basic-form',
+                  },
+                  {
+                    name: 'basic-form',
+                    icon: 'icon-twitter',
+                    path: '/form/basic-form',
+                    component: './form/basic-form'
+                  },
+                  {
+                    name: 'step-form',
+                    icon: 'smile',
+                    path: '/form/step-form',
+                    component: './form/step-form',
+                  },
+                ]
+              },
+              {
                 path: '/admin',
                 name: 'admin',
                 icon: 'crown',
