@@ -20,7 +20,6 @@ import type { ConnectState } from '@/models/connect';
 import { getMatchMenu } from '@umijs/route-utils';
 import logo from '../assets/logo.svg';
 
-
 import {HomeOutlined, PicLeftOutlined, SmileOutlined, HeartOutlined, SettingOutlined, SlackSquareOutlined} from '@ant-design/icons';
 
 import defaultMenus from './defaultMenus'
@@ -182,6 +181,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       }}
       // menuDataRender={menuDataRender}
       menuDataRender={() => loopMenuItem(defaultMenus)}
+      // 自定义头右部的 render 方法
       rightContentRender={() => <RightContent />}
       postMenuData={(menuData) => {
         menuDataRef.current = menuData || [];
