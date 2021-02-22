@@ -34,6 +34,24 @@
                 component: './Welcome',
               },
               {
+                path: '/dashboard',
+                name: 'dashboard',
+                icon: 'smile',
+                // icon: 'icon-shoucang1',
+                routes: [
+                  // {
+                  //   path: '/',
+                  //   redirect: '/dashboard/analysis',
+                  // },
+                  {
+                    name: 'analysis',
+                    icon: 'icon-facebook',
+                    path: '/dashboard/analysis',
+                    component: './dashboard/analysis',
+                  },
+                ]
+              },
+              {
                 path: '/admin',
                 name: 'admin',
                 icon: 'crown',
