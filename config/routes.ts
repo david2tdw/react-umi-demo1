@@ -1,4 +1,6 @@
-﻿export default [
+﻿import { SmileOutlined, CrownOutlined, TabletOutlined, AntDesignOutlined } from '@ant-design/icons';
+
+export default [
   {
     path: '/',
     component: '../layouts/BlankLayout',
@@ -6,12 +8,22 @@
       {
         path: '/user',
         component: '../layouts/UserLayout',
+        // redirect: '/user/login-new',
         routes: [
+          // {
+          //   path: '/',
+          //   redirect: '/user/login-new'
+          // },
           {
-            name: 'login',
+            name: 'login-old',
             path: '/user/login',
             component: './User/login',
           },
+          {
+            name: 'login',
+            path: '/user/login-new',
+            component: './User/login-new'
+          }
         ],
       },
       {

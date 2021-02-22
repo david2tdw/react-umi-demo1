@@ -20,6 +20,27 @@ import type { ConnectState } from '@/models/connect';
 import { getMatchMenu } from '@umijs/route-utils';
 import logo from '../assets/logo.svg';
 
+
+import {HomeOutlined, PicLeftOutlined, SmileOutlined, HeartOutlined, SettingOutlined, SlackSquareOutlined} from '@ant-design/icons';
+
+import defaultMenus from './defaultMenus'
+
+const IconMap = {
+  smile: <SmileOutlined />,
+  heart: <HeartOutlined />,
+  home: <HomeOutlined />,
+  picLeft: <PicLeftOutlined />,
+  setting: <SettingOutlined />,
+  SlackSquare: <SlackSquareOutlined />,
+}
+
+const loopMenuItem = (menus: MenuDataItem[]): MenuDataItem[] =>
+  menus.map(({ icon, children, ...item }) => ({
+    ...item,
+    icon: icon && IconMap[icon as string],
+    children: children && loopMenuItem(children),
+  }));
+
 const noMatch = (
   <Result
     status={403}
@@ -159,7 +180,8 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
         }
         return null;
       }}
-      menuDataRender={menuDataRender}
+      // menuDataRender={menuDataRender}
+      menuDataRender={() => loopMenuItem(defaultMenus)}
       rightContentRender={() => <RightContent />}
       postMenuData={(menuData) => {
         menuDataRef.current = menuData || [];
@@ -167,12 +189,14 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       }}
     >
       <Authorized authority={authorized!.authority} noMatch={noMatch}>
+        ************basic layout***********************
         {children}
       </Authorized>
     </ProLayout>
   );
 };
 
+// global, settings为models的namespace
 export default connect(({ global, settings }: ConnectState) => ({
   collapsed: global.collapsed,
   settings,

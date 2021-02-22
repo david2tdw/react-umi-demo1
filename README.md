@@ -1,57 +1,65 @@
-# Ant Design Pro
+# umi project
 
-This project is initialized with [Ant Design Pro](https://pro.ant.design). Follow is the quick guide for how to use.
+## Getting Started
 
-## Environment Prepare
-
-Install `node_modules`:
+Install dependencies,
 
 ```bash
-npm install
+$ yarn
 ```
 
-or
+Start the dev server,
 
 ```bash
-yarn
+$ yarn start
 ```
 
-## Provided Scripts
-
-Ant Design Pro provides some useful script to help you quick start and build with web project, code style check and test.
-
-Scripts provided in `package.json`. It's safe to modify or add additional script:
-
-### Start project
-
-```bash
-npm start
+## plugins:
+```
+yarn upgrade react@^17.0.0
+yarn upgrade react-dom@^17.0.0
+yarn add @ant-design/pro-layout
 ```
 
-### Build project
+## 参考：
+https://github.com/mpw0311/antd-umi-sys
+https://github.com/chenshuai2144/merge-value-hooks#readme
 
-```bash
-npm run build
-```
 
-### Check code style
+How to remove experimentalDecorators warning in VSCode
+https://ihatetomatoes.net/how-to-remove-experimentaldecorators-warning-in-vscode/
 
-```bash
-npm run lint
-```
 
-You can also use script to auto fix some lint error:
 
-```bash
-npm run lint:fix
-```
+React新生命周期--getDerivedStateFromProps
+https://www.jianshu.com/p/50fe3fb9f7c3
 
-### Test code
+React 子组件的defaultProps、propTypes
+https://www.jianshu.com/p/a1a505929ba5
 
-```bash
-npm test
-```
+useMemo和useCallback的使用
+https://www.jianshu.com/p/b71e56ea2fda
 
-## More
 
-You can view full document on our [official website](https://pro.ant.design). And welcome any feedback in our [github](https://github.com/ant-design/ant-design-pro).
+图解scrollHeight, clientHeight, offsetHeight, scrollTop以及获取方法
+https://www.jianshu.com/p/d267456ebc0d
+
+## 问题
+页面用.tsx或.js 文件都可以，但页面中不能使用PureComponent, 否则渲染不出来。
+采用ant design pro v4模板。
+
+## 说明
+layout:
+src/layouts/BasicLayout.tsx - 系统主页面layout
+src/layouts/BlankLayout.tsx - 空白页面layout
+src/layouts/UserLayout.tsx - 用户登录layout
+
+配置：
+.umirc.ts
+
+动态菜单：
+src/layouts/defaultMenus.js
+layouts/BasicLayout.tsx
+
+动态生成菜单：
+BasicLayout.tsx - menuDataRender()
