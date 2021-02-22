@@ -128,6 +128,73 @@ export default class TreeComponent extends React.Component {
     }
   }
 
+  renderLink (group, links) {
+    const { nodeWidth, fontNum, pathColor } = this.props;
+    const { fontSize } = this.state;
+    const link = group.selectAll('.link')
+      .data(links)
+      .enter()
+      .append('path')
+      .attr('class', 'link')
+      .attr('d', d => {
+        let lineOffsetWidth;
+        if (nodeWidth === null) {
+          lineOffsetWidth = (d.source.name.length + d.source.number.length + 2) * fontSize * fontNum;
+        } else {
+          lineOffsetWidth = nodeWidth[`_${d.source.length}`]
+        }
+        lineOffsetWidth = lineOffsetWidth + 10;
+        return 'M' + d.source.y + ' ' + d.source.x + 'L' + (d.source.y + lineOffsetWidth) + ' ' + d.source.x + ' L' + (d.source.y + lineOffsetWidth) + ' ' + d.target.x + ' L' + d.target.y + ' ' + d.target.x;
+      })
+      .attr('style', () => `stroke:${pathColor};fill:none;stroke-width: 1.5px;`);
+    return link;
+  }
+
+  renderNode (group, nodes) {
+    const { nodeHeight, nodeWidth, fontNum, radius, nodeColor, fontColor, bgColor } = this.props;
+    const { fontSize } = this.state;
+    const node = group.selectAll('.node')
+      .data(nodes)
+      .enter()
+      .append('g')
+      .attr('class', 'node')
+      .attr('transform', d => `translate(${d.y},${d.x - nodeHeight / 2})`)
+      .style('style', () => `font:${fontSize * fontNum}px sans-serif;`)
+      .style('cursor', 'pointer');
+    node.append('rect')
+      .attr('width', d=> nodeWidth === null ? (d.name.length + 2) * fontSize * fontNum: nodeWidth[`_${d.depth}`])
+      .attr('height', nodeHeight)
+      .attr('x', 0)
+      .attr('y', 0)
+      .attr('rx', radius)
+      .attr('ry', radius)
+      .attr('style', d => {
+        return `fill:${nodeColor}`;
+      });
+    // todo.....
+  }
+
+  renderSidebar (node) {
+
+  }
+
+  renderModel () {
+
+  }
+
+  renderRouter () {
+
+  }
+  bindEvent (node) {
+
+  }
+  bindSiderbarEvent (siderbar) {
+
+  }
+
+  bindScaleAndDrag (svg, group) {
+
+  }
 
   componentDidMount () {
     this.drawInit(this.dom)
