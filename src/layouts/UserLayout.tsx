@@ -34,6 +34,8 @@ const UserLayout: React.FC<UserLayoutProps> = (props) => {
     ...props,
   });
   return (
+    // react-helmet-async进行异步渲染
+    // Helmet 轻松管理和动态设置文档头部的内容
     <HelmetProvider>
       <Helmet>
         <title>{title}</title>
@@ -42,7 +44,7 @@ const UserLayout: React.FC<UserLayoutProps> = (props) => {
 
       <div className={styles.container}>
         <div className={styles.lang}>
-          <SelectLang />
+          {/* <SelectLang /> */}
         </div>
         <div className={styles.content}>
           <div className={styles.top}>
@@ -59,6 +61,7 @@ const UserLayout: React.FC<UserLayoutProps> = (props) => {
               />
             </div>
           </div>
+          userlayout children ....
           {children}
         </div>
         <DefaultFooter />
