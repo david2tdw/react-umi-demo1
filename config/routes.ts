@@ -75,6 +75,29 @@
                 ]
               },
               {
+                path: '/list',
+                icon: 'icon-twitter',
+                name: 'list',
+                routes: [
+                  {
+                    path: '/',
+                    redirect: '/list/table-list'
+                  },
+                  {
+                    name: 'table-list',
+                    icon: 'smile',
+                    path: '/list/table-list',
+                    component: './list/table-list',
+                  },
+                  {
+                    name: 'card-list',
+                    icon: 'smile',
+                    path: '/list/card-list',
+                    component: './list/card-list',
+                  },
+                ]
+              },
+              {
                 path: '/admin',
                 name: 'admin',
                 icon: 'crown',
@@ -93,7 +116,7 @@
               {
                 name: 'list.table-list',
                 icon: 'table',
-                path: '/list',
+                path: '/table-list',
                 component: './TableList',
               },
               {
