@@ -86,6 +86,8 @@ export default class TreeComponent extends React.Component {
     console.log('link:', links)
     const link = this.renderLink(contentGroup, links)
     const node = this.renderNode(contentGroup, nodes)
+    const siderbar = this.renderSidebar(node)
+    this.bindSiderbarEvent(siderbar)
   }
 
   getTreeData () {
@@ -210,7 +212,31 @@ export default class TreeComponent extends React.Component {
   }
 
   renderSidebar (node) {
-
+    const {nodeHeight, nodeWidth, fontNum, sidebarWidth, fontColor} = this.props
+    const { fontSize } = this.state
+    const siderbarHeight = nodeHeight / 2 - 1;
+    const g = node.append('g') 
+      .attr('transform', d => {
+        const x = nodeWidth[`_${d.depth}`] + 1
+        return `translate(${x}, 0)`
+      })
+      .attr('class', '_d3_anchor')
+      .style('display', 'none')
+    g.append('rect')
+      .attr('width', sidebarWidth)
+      .attr('height', siderbarHeight)
+      .attr('x', 0)
+      .attr('y', 0)
+      .attr('rx', 4)
+      .attr('ry', 4)
+      .style('fill', '#797979')
+    g.append('text')
+      .text('导出')
+      .style('fill', fontColor.normal)
+      .attr('dx', () => (sidebarWidth - 2.5 * fontSize * fontNum) / 2)
+      .attr('dy', (fontSize * fontNum + siderbarHeight) / 2 -2)
+      .style('text-anchor', 'start')
+    return g;
   }
 
   renderModel () {
@@ -224,7 +250,11 @@ export default class TreeComponent extends React.Component {
 
   }
   bindSiderbarEvent (siderbar) {
-
+    const {siderbarClick} = this.props
+    siderbar.on('click', function (d) {
+      console.log(d)
+      typeof siderbarClick === 'function' && siderbarClick(d)
+    })
   }
 
   bindScaleAndDrag (svg, group) {
