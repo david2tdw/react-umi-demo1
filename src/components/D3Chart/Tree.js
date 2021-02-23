@@ -81,7 +81,11 @@ export default class TreeComponent extends React.Component {
     const contentGroup = svg.append('g')
       .attr('transform', `translate(${gridPading.left}, ${gridPading.top})`);
     // const {nodes, links} = this.getTreeData();
-    this.getTreeData()
+    const {nodes, links} = this.getTreeData()
+    console.log('nodes', nodes)
+    console.log('link:', links)
+    const link = this.renderLink(contentGroup, links)
+    const node = this.renderNode(contentGroup, nodes)
   }
 
   getTreeData () {
@@ -141,9 +145,10 @@ export default class TreeComponent extends React.Component {
         if (nodeWidth === null) {
           lineOffsetWidth = (d.source.name.length + d.source.number.length + 2) * fontSize * fontNum;
         } else {
-          lineOffsetWidth = nodeWidth[`_${d.source.length}`]
+          lineOffsetWidth = nodeWidth[`_${d.source.depth}`]
         }
         lineOffsetWidth = lineOffsetWidth + 10;
+        console.log(d.source, lineOffsetWidth)
         return 'M' + d.source.y + ' ' + d.source.x + 'L' + (d.source.y + lineOffsetWidth) + ' ' + d.source.x + ' L' + (d.source.y + lineOffsetWidth) + ' ' + d.target.x + ' L' + d.target.y + ' ' + d.target.x;
       })
       .attr('style', () => `stroke:${pathColor};fill:none;stroke-width: 1.5px;`);
@@ -172,6 +177,36 @@ export default class TreeComponent extends React.Component {
         return `fill:${nodeColor}`;
       });
     // todo.....
+    node.append('text')
+      .attr('dx', d => {
+        const width = nodeWidth[`_${d.depth}`]
+        const name = d.data.name
+        const len = name.length
+        const n = (/[A-Za-z0-9]/g).test(name) ? len / 2: len;
+        return (width - n * fontSize * fontNum) / 2 - 4;
+      })
+      .attr('dy', (fontSize * fontNum + nodeHeight / 2) / 2 - 2)
+      .style('text-anchor', 'start')
+      .style('fill', fontColor.normal)
+      .text(d => d.data.name)
+    node.append('text')
+      .attr('dx', d => (nodeWidth[`_${d.depth}`] - ((d.value + '').length + 4) * fontSize * fontNum) / 2)
+      .attr('dy', (fontSize * fontNum / 2 + nodeHeight * 3 / 4) - 2)
+      .style('text-anchor', 'start')
+      .style('fill', fontColor.normal)
+      .text(d => {
+        return '人数：' + d.value;
+      });
+    node.append('rect')
+      .attr('class', 'tag')
+      .attr('width', d => nodeWidth === null ? (d.name.length + d.number.length + 2) : nodeWidth[`_${d.depth}`])
+      .attr('height', nodeHeight)
+      .attr('x', 0)
+      .attr('y', 0)
+      .attr('rx', radius)
+      .attr('ry', radius)
+      .attr('style', 'opacity: 0;')
+    return node;
   }
 
   renderSidebar (node) {
