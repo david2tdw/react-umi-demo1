@@ -62,13 +62,24 @@ export default [
       {
         path: '/chart/bar-chart',
         name: 'bar-chart',
-        icon: ''
+        icon: '',
       },
       {
         path: '/chart/tree-chart',
         name: 'tree-chart',
-        icon: ''
-      }
-    ]
+        icon: '',
+      },
+    ],
+  },
+  {
+    path: '/editor',
+    name: 'editor',
+    icon: 'setting',
+    children: [
+      {
+        path: '/editor/flow',
+        name: 'flow',
+      },
+    ],
   },
 ];

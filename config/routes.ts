@@ -22,8 +22,8 @@ export default [
           {
             name: 'login',
             path: '/user/login-new',
-            component: './User/login-new'
-          }
+            component: './User/login-new',
+          },
         ],
       },
       {
@@ -61,7 +61,7 @@ export default [
                     path: '/dashboard/analysis',
                     component: './dashboard/analysis',
                   },
-                ]
+                ],
               },
               {
                 path: '/form',
@@ -76,7 +76,7 @@ export default [
                     name: 'basic-form',
                     icon: 'icon-twitter',
                     path: '/form/basic-form',
-                    component: './form/basic-form'
+                    component: './form/basic-form',
                   },
                   {
                     name: 'step-form',
@@ -84,7 +84,7 @@ export default [
                     path: '/form/step-form',
                     component: './form/step-form',
                   },
-                ]
+                ],
               },
               {
                 path: '/list',
@@ -93,7 +93,7 @@ export default [
                 routes: [
                   {
                     path: '/',
-                    redirect: '/list/table-list'
+                    redirect: '/list/table-list',
                   },
                   {
                     name: 'table-list',
@@ -107,7 +107,7 @@ export default [
                     path: '/list/card-list',
                     component: './list/card-list',
                   },
-                ]
+                ],
               },
               {
                 path: '/admin',
@@ -140,14 +140,26 @@ export default [
                   {
                     path: '/chart/bar-chart',
                     name: 'bar-chart',
-                    component: './Chart/bar-chart'
+                    component: './Chart/bar-chart',
                   },
                   {
                     path: '/chart/tree-chart',
                     name: 'tree-chart',
-                    component: './Chart/TreeChart'
+                    component: './Chart/TreeChart',
                   },
-                ]
+                ],
+              },
+              {
+                path: 'editor',
+                name: 'editor',
+                icon: 'table',
+                routes: [
+                  {
+                    path: '/editor/flow',
+                    name: 'editor-flow',
+                    component: './editor/flow',
+                  },
+                ],
               },
               {
                 component: './404',
