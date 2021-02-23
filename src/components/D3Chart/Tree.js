@@ -86,8 +86,13 @@ export default class TreeComponent extends React.Component {
     console.log('link:', links)
     const link = this.renderLink(contentGroup, links)
     const node = this.renderNode(contentGroup, nodes)
-    const siderbar = this.renderSidebar(node)
+    const siderbar = this.renderSiderbar(node)
+    this.renderRouter(routeGroup);
+    this.renderModel(node);
+    console.log('xxxxxx', node)
+    this.bindEvent(node);
     this.bindSiderbarEvent(siderbar)
+    this.bindScaleAndDrag(svg, contentGroup)
   }
 
   getTreeData () {
@@ -169,7 +174,7 @@ export default class TreeComponent extends React.Component {
       .style('style', () => `font:${fontSize * fontNum}px sans-serif;`)
       .style('cursor', 'pointer');
     node.append('rect')
-      .attr('width', d=> nodeWidth === null ? (d.name.length + 2) * fontSize * fontNum: nodeWidth[`_${d.depth}`])
+      .attr('width', d=> nodeWidth === null ? (d.name.length + 2) * fontSize * fontNum : nodeWidth[`_${d.depth}`])
       .attr('height', nodeHeight)
       .attr('x', 0)
       .attr('y', 0)
@@ -201,7 +206,7 @@ export default class TreeComponent extends React.Component {
       });
     node.append('rect')
       .attr('class', 'tag')
-      .attr('width', d => nodeWidth === null ? (d.name.length + d.number.length + 2) : nodeWidth[`_${d.depth}`])
+      .attr('width', d => nodeWidth === null ? (d.name.length + d.number.length + 2) * fontSize * fontNum : nodeWidth[`_${d.depth}`])
       .attr('height', nodeHeight)
       .attr('x', 0)
       .attr('y', 0)
@@ -211,7 +216,7 @@ export default class TreeComponent extends React.Component {
     return node;
   }
 
-  renderSidebar (node) {
+  renderSiderbar (node) {
     const {nodeHeight, nodeWidth, fontNum, sidebarWidth, fontColor} = this.props
     const { fontSize } = this.state
     const siderbarHeight = nodeHeight / 2 - 1;
@@ -239,15 +244,185 @@ export default class TreeComponent extends React.Component {
     return g;
   }
 
-  renderModel () {
+  renderRouter (group) {
+    const {
+      data, 
+      fontNum, 
+      width, 
+      router: {
+        baseWidth,
+        arrowHeight,
+        gap,
+        paddingTop,
+      },
+      routerClick,
+      maxDepth,
+    } = this.props;
+    const {fontSize} = this.state;
+    const getPath = (children, arr = []) => {
+      if (children && children.length > 0) {
+        const [obj] = children.filter(item => item.children && item.children.length > 0)
+        if (obj) {
+          const {name, children} = obj;
+          arr.push(name);
+          return getPath(children, arr)
+        }
+      }
+      return arr;
+    }
+    const getArrowPath = (start = [], L = 10, n) => {
+      const [x1, y1] = start;
+      const h = arrowHeight;
+      const 
+        x2 = x1 + L,
+        y2 = y1,
+        x3 = x2 + 14,
+        y3 = y1 + h / 2,
+        x4 = x2,
+        y4 = y1 + h,
+        x5 = x1,
+        y5 = y1 + h,
+        x6 = x1 + 14,
+        y6 = y1 + h / 2;
+      if (n === 0) {
+        return `${x1}, ${y1} ${x2},${y2} ${x3},${y3} ${x4},${y4} ${x5},${y5}`
+      }
+      return `${x1},${y1} ${x2},${y2} ${x3},${y3} ${x4},${y4} ${x5},${y5} ${x6},${y6}`;
+    };
 
+    const pathData = getPath([data])
+    const routerLength = pathData.length;
+    const getCoorData = (pathData) => {
+      let _x = gap;
+      let _y = paddingTop;
+      return pathData.map((item, i) => {
+        const n = (/[A-Za-z0-9\s]/g).test(item) ? item.length / 2 : item.length;
+        const L = n * 12 + baseWidth;
+        if ((_x + L) > width) {
+          _x = gap + L;
+          _y += arrowHeight + paddingTop;
+        } else {
+          _x += L
+        }
+        return {
+          value: item,
+          x: _x - L,
+          y: _y,
+          depth: i,
+        }
+      })
+    }
+    const coordata = getCoorData(pathData)
+    const nodes = group.selectAll('.polygon')
+      .data(coordata)
+      .enter()
+      .append('g')
+      .attr('transform', d => `translate(${d.x}, ${d.y})`)
+      .style('cursor', 'pointer')
+    nodes.append('polygon')
+      .attr('points', d => {
+        const {value, depth} = d
+        const n = (/[A-Za-z0-9\s]/g).test(value) ? value.length / 2 : value.length;
+        return getArrowPath([0,0], n * 12 + baseWidth - gap, depth);
+      })
+      .attr('class', 'polygon')
+      .style('fill', d => d.depth <= routerLength - maxDepth ? 'rgba(241, 79, 67, 0.8)' : 'rgba(0, 33, 64, 0.7)');
+    nodes.append('text')
+      .text(d => d.value)
+      .attr('dx', d => d.depth === 0 ? gap: gap + 10)
+      .attr('dy', (arrowHeight + fontSize * fontNum) / 2)
+      .style('fill', '#e1e1e1')
+    nodes.on('click', function (d) {
+      typeof routerClick === 'function' && routerClick(d);
+    })
+    return nodes;
   }
 
-  renderRouter () {
-
+  renderModel (node) {
+    const {
+      modelWidth,
+      modelHeight,
+      nodeWidth,
+      radius,
+      fontNum,
+      fontColor,
+    } = this.props
+    const { fontSize } = this.state;
+    const L = 20;
+    const g = node.append('g')
+      .attr('transform', d => `translate(${(nodeWidth[`_${d.depth}`] - modelWidth[`_${d.depth}`]) / 2}, -${modelHeight - Math.sin(60) * L })`)
+      .attr('class', '_d3_model')
+      .style('display', 'none');
+    g.append('rect')
+      .attr('width', d => modelWidth[`_${d.depth}`])
+      .attr('height', modelHeight)
+      .attr('x', 0)
+      .attr('y', 0)
+      .attr('rx', radius)
+      .attr('ry', radius)
+      .style('fill', 'rgba(50, 50, 50, 0.7)')
+    g.append('text')
+      .text(d => {
+        const { value, parent} = d
+        return `占比：${parent ? (value / parent.value * 100).toFixed(2) : 100}%`
+      })
+      .style('fill', fontColor.normal)
+      .attr('dx', d => {
+        const fontWidth = 8 * fontSize * fontNum;
+        return (modelWidth) / 2;
+      })
+      .attr('dy', (fontSize * fontNum + modelHeight) / 4 + 2)
+      .style('text-anchor', 'start')
+    g.append('text')
+      .text(d => {
+        const {data: { time }} = d;
+        return `平均访问时长：${time? time : 0}ms`
+      })
+      .style('fill', fontColor.normal)
+      .attr('dx', d => {
+        const fontWidth = 12 * fontSize * fontNum;
+        return (modelWidth[`_${d.depth}`] - fontWidth) / 2;
+      })
+      .attr('dy', (fontSize * fontNum + modelHeight * 3 / 2 ) / 2 - 4)
+      .style('text-anchor', 'start')
+    g.append('polygon')
+      .attr('points', d => {
+        const x1 = (modelWidth[`_${d.depth}`] - L) / 2,
+          y1 = modelHeight,
+          x2 = x1 + L,
+          y2 = y1,
+          x3 = x1 + L / 2,
+          y3 = modelHeight - Math.sin(60) * L;
+        return `${x1},${y1} ${x2},${y2} ${x3},${y3}`;
+      })
+      .style('fill', 'rgba(50, 50, 50, 0.7)')
+    return g;
   }
+
   bindEvent (node) {
-
+    const { nodeClick } = this.props;
+    node.select('.tag')
+      .on('click', function (d) {
+        console.log(d)
+        typeof nodeClick === 'function' && nodeClick(d);
+      })
+    node.on('mouseover', function () {
+      d3.select(this)
+        .select('._d3_anchor')
+        .style('display', 'block')
+      d3.select(this)
+        .select('._d3_model')
+        .style('cursor', 'auto')
+        .style('display', 'block')
+    })
+      .on('mouseout', function () {
+        d3.select(this)
+          .select('._d3_anchor')
+          .style('display', 'none')
+        d3.select(this)
+          .select('._d3_model')
+          .style('display', 'none')
+      });
   }
   bindSiderbarEvent (siderbar) {
     const {siderbarClick} = this.props
@@ -258,7 +433,13 @@ export default class TreeComponent extends React.Component {
   }
 
   bindScaleAndDrag (svg, group) {
-
+    const Zoom = d3.zoom()
+      .scaleExtent([0.1, 100])
+      .on('zoom', function () {
+        const { x, y, k} = event.transform;
+        group.attr('transform', `translate(${x}, ${y}) scale(${k})`)
+      })
+    svg.call(Zoom)
   }
 
   componentDidMount () {

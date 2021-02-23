@@ -18,6 +18,18 @@ class TreeChart extends React.Component {
     return (
       <Tree 
         data={dataset}
+        nodeClick={(d) => {
+          const {data: {name}} = d;
+          handleClick(name);
+        }}
+        maxDepth={5}
+        siderbarClick={(d) => {
+          console.log(d)
+        }}
+        routerCliick={(d) => {
+          const { value } = d;
+          handleClick(value);
+        }}
       />
     );
   }
