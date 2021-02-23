@@ -156,7 +156,7 @@ export default class TreeComponent extends React.Component {
         }
         lineOffsetWidth = lineOffsetWidth + 10;
         console.log(d.source, lineOffsetWidth)
-        return 'M' + d.source.y + ' ' + d.source.x + 'L' + (d.source.y + lineOffsetWidth) + ' ' + d.source.x + ' L' + (d.source.y + lineOffsetWidth) + ' ' + d.target.x + ' L' + d.target.y + ' ' + d.target.x;
+        return 'M' + d.source.y + ' ' + d.source.x + ' L' + (d.source.y + lineOffsetWidth) + ' ' + d.source.x + ' L' + (d.source.y + lineOffsetWidth) + ' ' + d.target.x + ' L' + d.target.y + ' ' + d.target.x;
       })
       .attr('style', () => `stroke:${pathColor};fill:none;stroke-width: 1.5px;`);
     return link;
@@ -364,12 +364,13 @@ export default class TreeComponent extends React.Component {
     g.append('text')
       .text(d => {
         const { value, parent} = d
+        console.log('xxxxxx',d)
         return `占比：${parent ? (value / parent.value * 100).toFixed(2) : 100}%`
       })
       .style('fill', fontColor.normal)
       .attr('dx', d => {
         const fontWidth = 8 * fontSize * fontNum;
-        return (modelWidth) / 2;
+        return (modelWidth[`_${d.depth}`] - fontWidth) / 2;
       })
       .attr('dy', (fontSize * fontNum + modelHeight) / 4 + 2)
       .style('text-anchor', 'start')
