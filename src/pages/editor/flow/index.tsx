@@ -1,16 +1,17 @@
-import { Col, Row } from 'antd';
-import GGEditor, { Flow } from 'gg-editor';
+import { Col, Row } from 'antd'
+import GGEditor, { Flow } from 'gg-editor'
 
-import { PageContainer } from '@ant-design/pro-layout';
-import React from 'react';
+import { PageContainer } from '@ant-design/pro-layout'
+import React from 'react'
 import { FlowDetailPanel } from './components/EditorDetailPanel'
 import EditorMinimap from './components/EditorMinimap'
-import { FlowItemPanel } from './components/EditorItemPanel';
-import { FlowToolbar } from './components/EditorToolbar';
+import { FlowItemPanel } from './components/EditorItemPanel'
+import { FlowToolbar } from './components/EditorToolbar'
+import { FlowContextMenu } from './components/EditorContextMenu'
 
-import styles from './index.less';
+import styles from './index.less'
 
-GGEditor.setTrackable(false);
+GGEditor.setTrackable(false)
 
 export default () => (
   <PageContainer content="千言万语不如一张图，流程图是表示算法思路的好方法">
@@ -32,6 +33,7 @@ export default () => (
           <EditorMinimap />
         </Col>
       </Row>
+      <FlowContextMenu />
     </GGEditor>
   </PageContainer>
-);
+)
