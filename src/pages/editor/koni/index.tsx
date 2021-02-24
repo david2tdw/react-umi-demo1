@@ -25,7 +25,7 @@ export default () => (
           <KoniToolbar />
         </Col>
       </Row>
-      <Row>
+      <Row className={styles.editorBd}>
         <Col span={2} className={styles.editorSidebar}>
           <KoniItemPanel />
         </Col>

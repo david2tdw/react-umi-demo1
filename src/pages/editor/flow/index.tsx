@@ -16,8 +16,8 @@ GGEditor.setTrackable(false)
 export default () => (
   <PageContainer content="千言万语不如一张图，流程图是表示算法思路的好方法">
     <GGEditor className={styles.editor}>
-      <Row>
-        <Col>
+      <Row className={styles.editorHd}>
+        <Col span={24}>
           <FlowToolbar />
         </Col>
       </Row>
