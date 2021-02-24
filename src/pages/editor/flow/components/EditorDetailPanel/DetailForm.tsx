@@ -4,10 +4,10 @@ import { withPropsAPI } from 'gg-editor'
 
 
 const upperFirst = (str: string) =>
-  str.toLowerCase().replace(/( |^)[a-z]/g, (l: string) => l.toUpperCase());
+  str.toLowerCase().replace(/( |^)[a-z]/g, (l: string) => l.toUpperCase())
 
-const {Item} = Form;
-const { Option} = Select;
+const { Item } = Form
+const { Option } = Select
 
 const inlineFormItemLayout = {
   labelCol: {
@@ -23,58 +23,87 @@ const inlineFormItemLayout = {
 }
 
 interface DetailFormProps {
-  type: string;
-  propsAPI?: any;
+  type: string
+  propsAPI?: any
 }
 
 class DetailForm extends React.Component<DetailFormProps> {
 
   get item() {
-    const {propsAPI} = this.props;
-    return propsAPI.getSelected()[0];
+    const { propsAPI } = this.props
+    return propsAPI.getSelected()[0]
   }
 
   handleFieldChange = (values: any) => {
-    const { propsAPI } = this.props;
-    const { getSelected, executeCommand, update } = propsAPI; // ???
+    const { propsAPI } = this.props
+    const { getSelected, executeCommand, update } = propsAPI // ???
 
     setTimeout(() => {
-      const item = getSelected()[0];
+      const item = getSelected()[0]
       if (!item) {
-        return ;
+        return
       }
       executeCommand(() => {
         update(item, {
           ...values,
         })
       })
-    }, 0);
+    }, 0)
   }
 
   handleInputBlur = (type: string) => (e: React.FormEvent<HTMLInputElement>) => {
-    e.preventDefault();
+    e.preventDefault()
     this.handleFieldChange({
       [type]: e.currentTarget.value,
     })
   }
 
   renderNodeDetail = () => {
-    // todo
-    return null;
+    const { label } = this.item.getModel();
+
+    return (
+      <Form initialValues={{ label }}>
+        <Item label="Label" name="label" {...inlineFormItemLayout}>
+          <Input onBlur={this.handleInputBlur('label')} />
+        </Item>
+      </Form>
+    );
   }
 
   renderEdgeDetail = () => {
-    return null;
+    const { label = '', shape = 'flow-smooth'} = this.item.getModel();
+    return (
+      <Form initialValues={{ label, shape }}>
+        <Item label="Label" name="label" {...inlineFormItemLayout}>
+          <Input onBlur={this.handleInputBlur('label')} />
+        </Item>
+        <Item label="Shape" name="shape" {...inlineFormItemLayout}>
+          <Select onChange={(value) => this.handleFieldChange({shape: value})}>
+            <Option value="flow-smooth">Smooth</Option>
+            <Option value="flow-polyline">Polyline</Option>
+            <Option value="flow-polyline-round">Polyline Round</Option>
+          </Select>
+        </Item>
+      </Form>
+    );
   }
 
   renderGroupDetail = () => {
-    return null;
+    const { label = '新建分组' } = this.item.getModel();
+
+    return (
+      <Form initialValues={{ label }}>
+        <Item label="Label" name="label" {...inlineFormItemLayout}>
+          <Input onBlur={this.handleInputBlur('label')} />
+        </Item>
+      </Form>
+    );
   }
 
-  render () {
-    const { type } = this.props;
-    if (! this.item) {
-      return null;
+  render() {
+    const { type } = this.props
+    if (!this.item) {
+      return null
     }
 
     return (
@@ -83,8 +112,8 @@ class DetailForm extends React.Component<DetailFormProps> {
         {type === 'edge' && this.renderEdgeDetail()}
         {type === 'group' && this.renderGroupDetail()}
       </Card>
-    );
+    )
   }
 }
 
-export default withPropsAPI(DetailForm as any);
+export default withPropsAPI(DetailForm as any)

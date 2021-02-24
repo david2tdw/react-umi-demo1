@@ -13,7 +13,7 @@ import styles from './index.less';
 GGEditor.setTrackable(false);
 
 export default () => (
-  <PageContainer content="description">
+  <PageContainer content="千言万语不如一张图，流程图是表示算法思路的好方法">
     <GGEditor className={styles.editor}>
       <Row>
         <Col>
