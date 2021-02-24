@@ -80,6 +80,10 @@ export default [
         path: '/editor/flow',
         name: 'flow',
       },
+      {
+        path: '/editor/koni',
+        name: 'koni',
+      },
     ],
   },
 ];

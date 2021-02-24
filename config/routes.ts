@@ -159,6 +159,12 @@ export default [
                     name: 'editor-flow',
                     component: './editor/flow',
                   },
+                  {
+                    name: 'koni',
+                    icon: 'smile',
+                    path: '/editor/koni',
+                    component: './editor/koni',
+                  }
                 ],
               },
               {
