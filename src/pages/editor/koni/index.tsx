@@ -6,8 +6,12 @@ import GGEditor, { Koni } from 'gg-editor'
 import { PageContainer } from '@ant-design/pro-layout'
 import { KoniToolbar } from './components/EditorToolbar'
 import { KoniItemPanel } from './components/EditorItemPanel'
+import { KoniDetailPanel } from './components/EditorDetailPanel'
+import EditorMinimap from './components/EditorMinimap'
 
 import styles from './index.less'
+
+
 
 GGEditor.setTrackable(false)
 
@@ -26,10 +30,11 @@ export default () => (
           <KoniItemPanel />
         </Col>
         <Col span={16} className={styles.editorContent}>
-          2
+          <Koni className={styles.koni} />
         </Col>
         <Col span={6} className={styles.editorSidebar}>
-          3
+          <KoniDetailPanel />
+          <EditorMinimap />
         </Col>
       </Row>
     </GGEditor>
