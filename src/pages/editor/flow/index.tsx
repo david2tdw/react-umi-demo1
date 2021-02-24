@@ -4,7 +4,7 @@ import GGEditor, { Flow } from 'gg-editor';
 import { PageContainer } from '@ant-design/pro-layout';
 import React from 'react';
 import { FlowDetailPanel } from './components/EditorDetailPanel'
-// import EditorMinimap from './components/EditorMinimap'
+import EditorMinimap from './components/EditorMinimap'
 import { FlowItemPanel } from './components/EditorItemPanel';
 import { FlowToolbar } from './components/EditorToolbar';
 
@@ -29,7 +29,7 @@ export default () => (
         </Col>
         <Col span={4} className={styles.editorSidebar}>
           <FlowDetailPanel />
-          detail panel
+          <EditorMinimap />
         </Col>
       </Row>
     </GGEditor>
